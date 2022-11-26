@@ -1,0 +1,61 @@
+version: '3.7'
+
+services:
+  web:
+    container_name: mailganer_web
+    restart: always
+    build:
+      context: ./
+      dockerfile: ./Dockerfile
+    stdin_open: true
+    tty: true
+    command: sh -c "sleep 2 && python manage.py migrate && python manage.py runserver 0.0.0.0:8001"
+    volumes:
+      - static_volume:/home/app/web/static
+      - media_volume:/home/app/web/media
+      - ${PWD}/logs:/home/app/web/logs
+      - ./:/home/app/web
+    env_file:
+      - ./.env.local
+    ports:
+      - "8001:8001"
+
+  db:
+    container_name: mailganer_db
+    restart: always
+    image: postgres:14.2-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    env_file:
+      - ./.env.local.db
+    ports:
+      - 5432:5432
+
+  redis:
+    container_name: mailganer_redis
+    command: sh -c 'exec redis-server'
+    restart: always
+    image: redis:7.0.2-alpine
+    volumes:
+      - ../redis_data:/var/lib/redis/data/
+
+  celery_worker:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    command: sh -c "celery worker -A app -l info"
+    container_name: mailganer_celery_worker
+    volumes:
+      - ./:/home/app/web
+    depends_on:
+      - web
+      - redis
+    restart: on-failure
+    env_file:
+      - .env.local
+
+
+volumes:
+  postgres_data:
+  static_volume:
+  media_volume:

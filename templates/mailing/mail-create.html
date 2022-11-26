@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% load tz %}
+{% block title %}
+
+{% endblock %}
+
+
+{% block content %}
+	<div class="container-fluid">
+		<div class="alert alert-dark" role="alert">
+		    <strong>Переменные</strong>
+			Вы можете использовать переменные:
+			{% verbatim %}
+				{{name}}, {{surname}}, {{email}}, {{birthday}}, {{age}}, {{phone}}
+			{% endverbatim %}
+		</div>
+		<form method="POST" class="form-group col-6" enctype="multipart/form-data">
+			{% csrf_token %}
+			{{ form }}
+			<input class="btn btn-primary" type="submit" value="Создать">
+		</form>
+	</div>
+{% endblock %}

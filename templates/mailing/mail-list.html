@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% load datetime_format %}
+{% load tz %}
+
+{% block title %}
+
+{% endblock %}
+
+
+{% block content %}
+	<div class="container-fluid">
+		<div class="mails col-6">
+				<div class="mails__tools">
+					<a href="{% url 'mailing:mail-create' %}" class="mails__tools_create btn btn-primary create-button">Создать рассылку</a>
+				</div>
+			<table class="mails__table table table-responsive">
+				<thead>
+					<tr>
+						<td>Дата рассылки</td>
+						<td>Информация</td>
+					</tr>
+				</thead>
+				{% get_current_timezone as TIME_ZONE %}
+				{% for mail in mail_list %}
+					<tr>
+						<td>{{ mail.created|tz_format:TIME_ZONE }}</td>
+						<td>{{ mail.list.name }}</td>
+					</tr>
+				{% endfor %}
+			</table>
+		</div>
+	</div>
+{% endblock %}

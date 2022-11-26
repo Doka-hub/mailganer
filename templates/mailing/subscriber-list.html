@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}
+
+{% endblock %}
+
+
+{% block content %}
+	<div class="container-fluid">
+		<div class="subscribers col-6">
+			<div class="subscribers__tools">
+				<a href="{% url 'mailing:subscribers-create' %}" class="subscribers__tools_create btn btn-primary create-button">Добавить подписчиков</a>
+			</div>
+			<table class="subscribers__table table table-responsive">
+				<thead>
+					<tr>
+						<td>Почта</td>
+						<td>Список</td>
+					</tr>
+				</thead>
+				{% for subscriber in subscriber_list %}
+					<tr>
+						<td>{{ subscriber.email }}</td>
+						<td>{{ subscriber.list.name }}</td>
+					</tr>
+				{% endfor %}
+			</table>
+		</div>
+	</div>
+{% endblock %}

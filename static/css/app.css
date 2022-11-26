@@ -1,0 +1,34 @@
+
+form {
+    display: flex!important;
+    flex-direction: column!important;
+}
+table {
+    border-style: solid;
+}
+
+table td {
+    padding: 10px 5px;
+
+    border-style: solid;
+}
+
+.content {
+    max-width: 80%;
+}
+
+.create-button {
+    padding-left: 20px!important;
+}
+
+.create-button::before {
+    display: block;
+    position: absolute;
+
+    content: '+';
+    left: 20px;
+}
+
+.table {
+    margin-top: 50px;
+}
